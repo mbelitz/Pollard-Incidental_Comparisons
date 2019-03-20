@@ -30,7 +30,6 @@ grid_1deg <- readOGR("data/gis", "grid_1deg")
 grid_1deg$polyids <- 1:nrow(grid_1deg)
 
 
-
 # tidy data
 
 # tidy ebutterfly data 
