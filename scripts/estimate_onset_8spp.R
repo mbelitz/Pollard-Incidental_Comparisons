@@ -32,10 +32,6 @@ grid_1deg <- readOGR("data/gis", "grid_1deg")
 grid_1deg$polyids <- 1:nrow(grid_1deg)
 
 
-grid_2deg <- readOGR("data/gis", "grid_2deg")
-grid_2deg$polyids <- 1:nrow(grid_2deg)
-
-
 # tidy data
 
 # tidy ebutterfly data 
@@ -173,7 +169,6 @@ grid_1deg_df <- grid_1deg@data %>%
   mutate(long_centroid = (left + right) / 2, lat_centroid = (top + bottom) / 2) 
 
 
-total_est_centroid_8spp <- left_join(total_est_8spp, grid_1deg_df, by = "polyids")
-
+total_est_centroid_8spp <- left_join(joined_onset_8spp, grid_1deg_df, by = "polyids")
 
 
