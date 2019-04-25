@@ -13,6 +13,8 @@ library(devtools)
 install_github("willpearse/phest")
 library(phest)
 
+install_github("andrewheiss/reconPlots")
+
 # import data sources
 cats <- read.csv("data/caterpillars_eastern_na.csv", stringsAsFactors = F)
 ebutterfly <- read.csv("data/allrecords_2018_09_20_08_16_15_semi.csv", stringsAsFactors = F)
