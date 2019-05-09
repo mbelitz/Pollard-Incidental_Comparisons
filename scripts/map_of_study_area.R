@@ -1,4 +1,5 @@
 library(tidyverse)
+library(rgdal)
 
 basemap = map_data('state')
 
@@ -20,3 +21,4 @@ ggplot() +
   labs(x='Longitude',y='Latitude') + 
   geom_polygon(data = grid_1deg_points, aes(x = long, y = lat, group = group),
   color = "black", fill = NA, size = 0.2)
+
