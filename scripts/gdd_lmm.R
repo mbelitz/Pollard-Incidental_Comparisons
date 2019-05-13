@@ -186,5 +186,46 @@ ggplot(total_model, aes(x = gdd, y = onset)) +
 
 # LMM
 
-a_celtis_lmm <- lme4::lmer(onset ~ gdd + (1|x) + (1|y), data = a_celtis_model)
-summary(a_celtis_lmm)
+a_celtis_null <- lme4::lmer(onset ~ (1|x), data = a_celtis_model, REML = FALSE)
+a_celtis_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = a_celtis_model, REML = FALSE)
+anova(a_celtis_gdd, a_celtis_null)
+
+
+s_cybele_null <- lme4::lmer(onset ~ (1|x), data = s_cybele_model, REML = FALSE)
+s_cybele_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = s_cybele_model, REML = FALSE)
+anova(s_cybele_gdd, s_cybele_null)
+
+e_clarus_null <- lme4::lmer(onset ~ (1|x), data = e_clarus_model, REML = FALSE)
+e_clarus_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = e_clarus_model, REML = FALSE)
+anova(e_clarus_gdd, e_clarus_null)
+
+c_eurytheme_null <- lme4::lmer(onset ~ (1|x), data = c_eurytheme_model, REML = FALSE)
+c_eurytheme_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = c_eurytheme_model, REML = FALSE)
+anova(c_eurytheme_gdd, c_eurytheme_null)
+
+e_comyntas_null <- lme4::lmer(onset ~ (1|x), data = e_comyntas_model, REML = FALSE)
+e_comyntas_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = e_comyntas_model, REML = FALSE)
+anova(e_comyntas_gdd, e_comyntas_null)
+
+p_tharos_null <- lme4::lmer(onset ~ (1|x), data = p_tharos_model, REML = FALSE)
+p_tharos_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = p_tharos_model, REML = FALSE)
+anova(p_tharos_gdd, p_tharos_null)
+
+p_rapae_null <- lme4::lmer(onset ~ (1|x), data = p_rapae_model, REML = FALSE)
+p_rapae_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = p_rapae_model, REML = FALSE)
+anova(p_rapae_gdd, p_rapae_null)
+
+p_interrogationis_null <- lme4::lmer(onset ~ (1|x), data = p_interrogationis_model, REML = FALSE)
+p_interrogationis_gdd <- lme4::lmer(onset ~ gdd + (1|x), data = p_interrogationis_model, REML = FALSE)
+anova(p_interrogationis_gdd, p_interrogationis_null)
+
+# Data Vis
+gdd_df <- as.data.frame(gdd_2018, xy = TRUE)
+
+plot(gdd_2018)
+
+total_model_2018 <- filter(total_model, year == 2018)
+
+ggplot() + 
+  geom_raster(data = gdd_df, aes(x = x, y = y, fill = Mean_GDD_2018)) +
+  geom_point(data = total_model_2018, aes(x = x, y = y, color = onset, shape = scientific_name))
