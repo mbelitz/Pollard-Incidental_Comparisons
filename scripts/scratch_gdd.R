@@ -90,7 +90,6 @@ total_buts <- rbind(inat_adults, ebutterfly_tidy) %>%
 total_buts_spdf <- SpatialPointsDataFrame(total_buts[,c("longitude", "latitude")], total_buts,
                                           proj4string = crs(gdd_2014))
 
-plot(total_buts_spdf, add = TRUE)
 
 # now get gdd data for every occurrence
 
@@ -109,14 +108,6 @@ s_cybele_gdd <- s_cybele_pts %>%
                                ifelse(year == 2017, extract(gdd_2017, s_cybele_spdf),
                                       ifelse(year == 2018, extract(gdd_2018, s_cybele_spdf), NA))))))
 
-s_cybele_gdd <- s_cybele_pts %>% 
-  if (year = 2014) {gdd = extract(gdd_2014, s_cybele_spdf)
-  } else if (year = 2015) {gdd = extract(gdd_2015, s_cybele_spdf)
-  } else if (year = 2016) {gdd = extract(gdd_2016, s_cybele_spdf)
-  } else if (year = 2017) {gdd = extract(gdd_2017, s_cybele_spdf)
-  } else if (year = 2018) {gdd = extract(gdd_2018, s_cybele_spdf)
-  } else {gdd = NA})
-
 # estimate onset
 
 s_cybele_2018 <- s_cybele_gdd %>% 
@@ -124,16 +115,7 @@ s_cybele_2018 <- s_cybele_gdd %>%
 
 library(phest)
 
-weib.limit(s_cybele_2018$day)  
-
-polypts <- spatialEco::point.in.poly(s_cybele_spdf, test)
-
 grid_sp <- as_Spatial(grid)
-
-species_df <- as.data.frame(polypts@data)
-
-estimate_weib_onset("Speyeria cybele", grid_sp)
-
 
 estimate_weib_onset <- function(binomial, polydeg){
   
@@ -208,5 +190,39 @@ s_cybele_gdd2 <- filter(s_cybele_gdd, gdd > 0)
 
 ggplot(s_cybele_gdd2) + 
   geom_point(mapping = aes(x = latitude, y = gdd)) + 
-  geom_smooth(aes(x = latitude, y = gdd), model = lm)
+  geom_smooth(aes(x = latitude, y = gdd), method = 'lm')
 
+# get centroids of cells
+
+library(rgeos)
+
+centroids <- gCentroid(grid_sp, byid = TRUE)
+
+centroids
+plot(gdd_2014)
+plot(grid, add = TRUE)
+plot(centroids, add = TRUE)
+
+centroids_spdf <- SpatialPointsDataFrame(as.data.frame(centroids@coords)[,c("x", "y")],
+                                         as.data.frame(centroids@coords), proj4string = crs(gdd_2014))
+
+
+centroids_pts <- spatialEco::point.in.poly(centroids_spdf, grid_sp)
+
+centroids_pts@data
+
+test_j <- left_join(s_cybele_model, centroids_pts@data)
+
+head(test_j)
+
+# plot
+
+ggplot(test_j, aes(x = y, y = gdd)) +
+  geom_point() + 
+  geom_smooth()
+
+ggplot(test_j, aes(x = gdd, y = onset)) +
+  geom_point() + 
+  geom_smooth()
+
+       
