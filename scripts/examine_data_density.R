@@ -13,6 +13,20 @@ tb_polypts <- spatialEco::point.in.poly(total_buts_spdf, grid_sp)
 
 tb_polypts_df <- as.data.frame(tb_polypts@data)
 
+lat_long_pts <- tb_polypts_df %>% 
+                dplyr::select(latitude, longitude, poly.ids) 
+
+lat_long_pts2 <- as.data.frame(unique(lat_long_pts[,c("poly.ids")]))
+
+names(lat_long_pts2)[1] <- "poly.ids"
+
+lat_long_pts3 <- left_join(lat_long_pts2, lat_long_pts)
+
+
+unique(df[,c('session','first','last')])
+lat_long_pts <- lat_long_pts %>% 
+  distinct
+
 most_oc <- tb_polypts_df %>% 
   group_by(year, scientific_name, poly.ids) %>% 
   summarise(count = n())
@@ -20,6 +34,11 @@ most_oc <- tb_polypts_df %>%
 most_oc <- most_oc %>% 
   filter(count >= 10, year >= 2014)
 
-most_oc <- most_oc %>% 
+# This needs to become unique values
+most_oc2 <- left_join(most_oc,lat_long_pts)
+
+most_oc_total <- most_oc %>% 
   group_by(scientific_name) %>% 
   summarise(total_cells = n())
+
+ggplot(most_oc)
