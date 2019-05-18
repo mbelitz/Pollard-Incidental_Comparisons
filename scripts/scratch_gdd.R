@@ -30,6 +30,7 @@ gdd_2018 <- crop(gdd_2018, e)
 
 plot(gdd_2014)
 plot(grid, add = TRUE)
+plot(total_buts_spdf, add = TRUE)
 
 # import butterfly data
 

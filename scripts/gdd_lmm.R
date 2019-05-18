@@ -171,17 +171,34 @@ e_comyntas_model <- estimate_weib_onset("Cupido comyntas", grid_sp)
 p_tharos_model <- estimate_weib_onset("Phyciodes tharos", grid_sp)
 p_rapae_model <- estimate_weib_onset("Pieris rapae", grid_sp)
 p_interrogationis_model <- estimate_weib_onset("Polygonia interrogationis", grid_sp)
+p_comma_model <- estimate_weib_onset("Polygonia comma", grid_sp)
+n_antiopa_model <- estimate_weib_onset("Nymphalis antiopa", grid_sp)
+c_pegala_model <- estimate_weib_onset("Cercyonis pegala", grid_sp)
+a_numitor_model <- estimate_weib_onset("Ancyloxypha numitor", grid_sp)
+m_cymela_model <- estimate_weib_onset("Megisto cymela", grid_sp)
+v_atalanta_model <- estimate_weib_onset("Vanessa atalanta", grid_sp)
 
 total_model <- rbind(a_celtis_model, s_cybele_model, e_clarus_model, c_eurytheme_model,
-      e_comyntas_model, p_tharos_model, p_rapae_model, p_interrogationis_model)
+      e_comyntas_model, p_tharos_model, p_rapae_model, p_interrogationis_model, p_comma_model,
+      n_antiopa_model, c_pegala_model, a_numitor_model, v_atalanta_model, m_cymela_model)
 
 # data vis plots
 
 library(ggplot2)
 
 ggplot(total_model, aes(x = gdd, y = onset)) +
-  geom_point(aes(color = scientific_name)) +
-  geom_smooth(aes(color = scientific_name), method = "lm")
+  geom_point(aes(color = scientific_name), alpha = 0.5) +
+  geom_smooth(aes(color = scientific_name), method = "lm", se = FALSE)
+
+
+spp_larsen <- rbind(s_cybele_model, c_pegala_model, a_numitor_model, e_comyntas_model, 
+                        m_cymela_model, p_tharos_model, p_comma_model, v_atalanta_model)
+
+test_model <- rbind(e_comyntas_model, p_tharos_model)
+
+ggplot(spp_larsen, aes(x = gdd, y = onset)) +
+  geom_point(aes(color = scientific_name), alpha = 0.5) +
+  geom_smooth(aes(color = scientific_name), method = "lm", se = FALSE)
 
 
 # LMM
