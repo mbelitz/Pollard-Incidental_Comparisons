@@ -57,3 +57,14 @@ for (i in 1:nrow(e_clarus)) {
   download(iurl[i], destfile=paste0('clean_butts/Epargyreus clarus', names[i],'.jpg'), mode = 'wb')
 }
 
+# download directly from inat
+library(rinat)
+
+inat_obs <- get_inat_obs(query = "Lepidoptera", bounds = c(35, -100, 55, -65), maxresults = 500)
+
+iurl<-inat_obs$image_url
+names<-inat_obs$id
+for (i in 105:length(iurl)) {
+  downloader::download(iurl[i], destfile=paste0('clean_butts/random', names[i],'.jpg'), mode = 'wb')
+}
+
