@@ -22,7 +22,8 @@ estimate_cat_pheno <- function(binomial, yearofinterest){
     group_by(lat_bin, lon_bin, year) %>% 
     mutate(cat_onset = weib.limit(jday, upper = FALSE)[["estimate"]], 
            cat_ci = weib.limit(jday,upper = FALSE)[["upper-ci"]], 
-           cat_low_ci = weib.limit(jday,upper = FALSE)[["lower-ci"]])
+           cat_low_ci = weib.limit(jday,upper = FALSE)[["lower-ci"]],
+           life_stage = "caterpillar")
   
   return(estimate_df)
 }
@@ -49,7 +50,8 @@ estimate_adult_pheno <- function(binomial, yearofinterest){
     group_by(lat_bin, lon_bin, year) %>% 
     mutate(adult_onset = weib.limit(jday, upper = FALSE)[["estimate"]], 
            adult_ci = weib.limit(jday,upper = FALSE)[["upper-ci"]], 
-           adult_low_ci = weib.limit(jday,upper = FALSE)[["lower-ci"]])
+           adult_low_ci = weib.limit(jday,upper = FALSE)[["lower-ci"]],
+           life_stage = "adult")
   
   return(estimate_df)
 }
@@ -59,11 +61,12 @@ estimate_adult_pheno <- function(binomial, yearofinterest){
 
 plot_obs <- function(binomial, year.of.interest){
  plot_out <-  ggplot() +
-    geom_histogram(data = estimate_adult_pheno("Halysidota tessellaris", year = year.of.interest), aes(x = jday), fill = "pink", alpha = 1) +
-    geom_histogram(data = estimate_cat_pheno("Halysidota tessellaris", year = year.of.interest), aes(x = jday), fill = "purple", alpha = 0.5) +
-    geom_vline(data = estimate_adult_pheno("Halysidota tessellaris", year = year.of.interest), aes(xintercept = adult_onset), size = 1, color = "red") +
-    geom_vline(data = estimate_cat_pheno("Halysidota tessellaris", year = year.of.interest), aes(xintercept = cat_onset), size = 1, color = "blue") +
-    facet_grid(lat_bin ~ lon_bin)
+    geom_histogram(data = estimate_adult_pheno(binomial, year = year.of.interest), aes(x = jday, fill = life_stage), alpha = 1) +
+    geom_histogram(data = estimate_cat_pheno(binomial, year = year.of.interest), aes(x = jday, fill = life_stage), alpha = 0.5) +
+    geom_vline(data = estimate_adult_pheno(binomial, year = year.of.interest), aes(xintercept = adult_onset), size = 1, color = "red") +
+    geom_vline(data = estimate_cat_pheno(binomial, year = year.of.interest), aes(xintercept = cat_onset), size = 1, color = "blue") +
+    facet_grid(lat_bin ~ lon_bin) +
+   ggtitle(binomial) 
 
 return(plot_out)
   
@@ -71,7 +74,7 @@ return(plot_out)
 
 ## look at differences in estimates over space
 
-examine_differences <- function(binomial, year.of.interest){
+examine_differences <- function(binomial, year.of.interest = 2018){
   
   combined_df <- inner_join(estimate_adult_pheno(binomial, year.of.interest), estimate_cat_pheno(binomial, year.of.interest), by = c("lat_bin", "lon_bin")) %>% 
     mutate(diff_onset = adult_onset - cat_onset)
@@ -81,7 +84,6 @@ examine_differences <- function(binomial, year.of.interest){
     geom_smooth(aes(x = lat_bin, y = diff_onset), method = "lm")
   
   return(combined_df)
-  print(plotz)
 }
 
 
