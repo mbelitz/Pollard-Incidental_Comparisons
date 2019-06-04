@@ -34,13 +34,10 @@ inat_adults <- inat_adults %>%
   dplyr::filter(latitude >= 0 & latitude <= 90)
 
 # import eButterfly data
-ebutterfly <- read.csv("data/allrecords_2018_09_20_08_16_15_semi.csv", stringsAsFactors = F)
+ebutterfly <- read.csv("data/eButterfly/all_records_2019_06_04_02_21_47.csv", stringsAsFactors = F)
 
-ebutlong <- parse_number(ebutterfly$Longitude)
-ebutlat <- parse_number(ebutterfly$Latitude)
-
-ebutterfly$Longitude <- ebutlong
-ebutterfly$Latitude <- ebutlat
+ebutterfly$Latitude <- as.numeric(ebutterfly$Latitude)
+ebutterfly$Longitude <- as.numeric(ebutterfly$Longitude)
 
 ebutterfly_tidy <- ebutterfly %>% 
   dplyr::filter(!is.na(Longitude)) %>% 
@@ -49,7 +46,6 @@ ebutterfly_tidy <- ebutterfly %>%
   dplyr::filter(Longitude < -50 & Longitude > -170) 
 
 ebutterfly_tidy <- ebutterfly_tidy %>%  
-  dplyr::mutate(Date.Observed = as.Date(ebutterfly_tidy$Date.Observed, "%m/%d/%Y")) %>% 
   dplyr::mutate(day = lubridate::yday(Date.Observed)) %>% 
   dplyr::mutate(year = lubridate::year(Date.Observed)) %>% 
   dplyr::mutate(data_source = "ebutterfly") %>% 
