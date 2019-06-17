@@ -8,3 +8,5 @@ cellswith10obs_2018.csv
 unique_cells_10obs.csv
 wrapped_latvar.png
 overlap.png
+overlapping_cells.csv
+spp_most_overlap.csv
