@@ -43,6 +43,11 @@ all_data <- all_data %>%
 overlap <-all_data %>% 
   filter(!is.na(combined_obs))
 
+overlap_10 <- overlap %>% 
+  filter(count >= 10)
+
+write.csv(overlap_10, file = "outputs/comparable_cells.csv", row.names = FALSE)
+
 overlap_dens <- overlap %>% 
   filter(count >= 10) %>% 
   group_by(year, scientific_name) %>% 
