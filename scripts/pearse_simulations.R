@@ -36,7 +36,10 @@ onsetestimator <- function(x){
 
 # 10 obs - 10 sd ONSET
 
-subsam_rep <- replicate(n = 30, expr = sample(total_observations, size = 10, replace = FALSE))
-subsam_list <- split(subsam_rep, rep(1:ncol(subsam_rep), each = nrow(subsam_rep)))
+rep_10obs_10sd <- replicate(n = 30, expr = sample(total_observations, size = 10, replace = FALSE))
+list_10obs_10sd <- split(subsam_rep, rep(1:ncol(rep_10obs_10sd), each = nrow(rep_10obs_10sd)))
 
-unlist(lapply(subsam_list, FUN = onsetestimator))
+pearse_onset_10obs_10sd <- unlist(lapply(list_10obs_10sd, FUN = onsetestimator))
+pearse_onset_10obs_10sd_df <- as.data.frame(split(pearse_onset_10obs_10sd, 1:3))
+
+pearse_onset_10obs_10sd_df$X2 < 162.68 & pearse_onset_10obs_10sd_df$X3 > 162.68
