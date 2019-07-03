@@ -26,12 +26,18 @@ ggplot(data= to_40sd, aes(x = obs_40sd)) + geom_histogram(bins = 150)
 min(to_40sd) # 35.88112
 max(to_40sd) #361.3789
 
-# lapply function
+# lapply functions
 
 onsetestimator <- function(x){
   
   onset <- phest::weib.limit(x, upper = FALSE )
   return(onset)
+}
+
+offsetestimator <- function(x){
+  
+   offset <- phest::weib.limit(x, upper = TRUE)
+  return(offset)
 }
 
 # 10 obs - 10 sd ONSET
@@ -43,3 +49,14 @@ pearse_onset_10obs_10sd <- unlist(lapply(list_10obs_10sd, FUN = onsetestimator))
 pearse_onset_10obs_10sd_df <- as.data.frame(split(pearse_onset_10obs_10sd, 1:3))
 
 pearse_onset_10obs_10sd_df$X2 < 162.68 & pearse_onset_10obs_10sd_df$X3 > 162.68
+
+# 10 obs - 10 sd OFFSET
+
+rep_10obs_10sd <- replicate(n = 30, expr = sample(total_observations, size = 10, replace = FALSE))
+list_10obs_10sd <- split(subsam_rep, rep(1:ncol(rep_10obs_10sd), each = nrow(rep_10obs_10sd)))
+
+pearse_offset_10obs_10sd <- unlist(lapply(list_10obs_10sd, FUN = offsetestimator))
+pearse_offset_10obs_10sd_df <- as.data.frame(split(pearse_onset_10obs_10sd, 1:3))
+
+pearse_offset_10obs_10sd_df$X2 < 162.68 & pearse_offset_10obs_10sd_df$X3 > 162.68
+
