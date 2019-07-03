@@ -14,6 +14,7 @@ ggplot(total_sims) +
   theme_bw()
 
 
+
 ggplot(total_sims) + 
   geom_boxplot(aes(x = ob_sd, y = distance, fill = obs, color = sd)) +
   scale_color_manual(values = c("black", "grey", "navy"))
