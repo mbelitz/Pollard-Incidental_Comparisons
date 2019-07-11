@@ -32,6 +32,9 @@ ggplot(ten.sim.summary.10, aes(x = uid, y = meanten)) +
   geom_hline(aes(yintercept = c(124.8)), color = "cyan3") +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") + 
   geom_errorbar(aes(ymin = meanlowci, ymax = meanhighci)) +
+  scale_y_continuous(expand = c(0,0)) +
+  ggtitle(label = "10 Observations", subtitle = "Lines are True 10%") +
+  labs(x = "Observations SD", y = "Average 10% Estimate of 30 Trials") +
   theme_classic()
 
 # 20 obs
@@ -47,6 +50,9 @@ ggplot(ten.sim.summary.20, aes(x = uid, y = meanten)) +
   geom_hline(aes(yintercept = c(124.8)), color = "cyan3") +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") + 
   geom_errorbar(aes(ymin = meanlowci, ymax = meanhighci)) +
+  scale_y_continuous(expand = c(0,0)) +
+  ggtitle(label = "20 Observations", subtitle = "Lines are True 10%") +
+  labs(x = "Observations SD", y = "Average 10% Estimate of 30 Trials") +
   theme_classic()
 
 # 50 obs
@@ -62,4 +68,7 @@ ggplot(ten.sim.summary.50, aes(x = uid, y = meanten)) +
   geom_hline(aes(yintercept = c(124.8)), color = "cyan3") +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") + 
   geom_errorbar(aes(ymin = meanlowci, ymax = meanhighci)) +
+  scale_y_continuous(expand = c(0,0)) +
+  ggtitle(label = "50 Observations", subtitle = "Lines are True 10%") +
+  labs(x = "Observations SD", y = "Average 10% Estimate of 30 Trials") +
   theme_classic()
