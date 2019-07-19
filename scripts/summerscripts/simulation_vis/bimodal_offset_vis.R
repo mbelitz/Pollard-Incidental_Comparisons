@@ -95,14 +95,14 @@ bm_offsetset_pass_sum <- bm_offsetset_pass_sum %>%
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30)
 
-ggplot(bm_offsetset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+bf_dis <- ggplot(bm_offsetset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True offset") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ggplot(bm_offsetset_pass_sum, aes(x = uid, y = percent_right)) +
+bf_corr <- ggplot(bm_offsetset_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true offset fall within the CIs?") + 
@@ -110,4 +110,5 @@ ggplot(bm_offsetset_pass_sum, aes(x = uid, y = percent_right)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
+bf <- plot_grid(bf_dis, bf_corr, rel_widths = 1, rel_heights = 1.4)
 

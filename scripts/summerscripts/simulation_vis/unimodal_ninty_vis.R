@@ -102,17 +102,20 @@ um_ninty_pass_sum <- um_ninty_pass_sum %>%
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30)
 
-ggplot(um_ninty_pass_sum, aes(x = uid, y = abs(mean_dis))) +
-  geom_bar(stat = "identity", aes(fill = estimator)) +
+un_dis <- ggplot(um_ninty_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True ninty") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ggplot(um_ninty_pass_sum, aes(x = uid, y = percent_right)) +
+un_corr <- ggplot(um_ninty_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = sd)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true ninty fall within the CIs?") + 
   scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
   theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+un <- plot_grid(un_dis, un_corr, rel_widths = 1, rel_heights = 1.5)
+

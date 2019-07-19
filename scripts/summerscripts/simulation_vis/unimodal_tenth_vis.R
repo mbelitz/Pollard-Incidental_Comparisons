@@ -47,7 +47,7 @@ umtenth_10obs <- ggplot(um_tenth.10) +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") + 
   scale_y_continuous(expand = c(0,0)) +
   ggtitle(label = "10 Observations", subtitle = "Lines are True tenth, Points are Outliers") +
-  labs(x = "Observatitenths SD", y = "tenth Estimates of 30 Trials") +
+  labs(x = "Observations SD", y = "tenth Estimates of 30 Trials") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
@@ -66,7 +66,7 @@ umtenth_20obs <- ggplot(um_tenth.20) +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") +
   scale_y_continuous(expand = c(0,0)) +
   ggtitle(label = "20 Observations", subtitle = "Lines are True tenth, Points are Outliers") +
-  labs(x = "Observatitenths SD", y = "tenth % Estimates of 30 Trials") +
+  labs(x = "Observations SD", y = "tenth % Estimates of 30 Trials") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
@@ -85,7 +85,7 @@ umtenth_50obs <- ggplot(um_tenth.50) +
   geom_hline(aes(yintercept = c(99.24)), color = "blue") +
   scale_y_continuous(expand = c(0,0)) +
   ggtitle(label = "50 Observations", subtitle = "Lines are True tenth, Points are Outliers") +
-  labs(x = "Observatitenths SD", y = "tenth % Estimates of 30 Trials") +
+  labs(x = "Observations SD", y = "tenth % Estimates of 30 Trials") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
@@ -104,17 +104,19 @@ um_tenth_pass_sum <- um_tenth_pass_sum %>%
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 20)
 
-ggplot(um_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
-  geom_bar(stat = "identity", aes(fill = estimator)) +
+ut_dis <- ggplot(um_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True tenth") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ggplot(um_tenth_pass_sum, aes(x = uid, y = percent_right)) +
-  geom_bar(stat = "identity", aes(fill = estimator)) +
+ut_corr <- ggplot(um_tenth_pass_sum, aes(x = uid, y = percent_right)) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true tenth fall within the CIs?") + 
   scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
   theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+ut <- plot_grid(ut_dis, ut_corr, rel_widths = 1, rel_heights = 1.5)

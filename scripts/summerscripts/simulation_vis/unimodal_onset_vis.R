@@ -101,14 +101,14 @@ um_onset_pass_sum <- um_onset_pass_sum %>%
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30)
 
-ggplot(um_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+uo_dis <- ggplot(um_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True Onset") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ggplot(um_onset_pass_sum, aes(x = uid, y = percent_right)) +
+uo_cor <- ggplot(um_onset_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true onset fall within the CIs?") + 
@@ -116,3 +116,4 @@ ggplot(um_onset_pass_sum, aes(x = uid, y = percent_right)) +
   theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
+uo <- cowplot::plot_grid(uo_dis, uo_cor, ncol = 1)
