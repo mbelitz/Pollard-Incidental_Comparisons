@@ -3,105 +3,112 @@ library(ggplot2)
 
 # set up sims
 
-bm_on <- read.csv("simulation_outputs/bimodal_onset_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+um_on <- read.csv("simulation_outputs/unimodal_onset_sims.csv", stringsAsFactors = FALSE, header = TRUE)
 
-bm_on$sd <- as.factor(bm_on$sd)
-bm_on$obs <- as.factor(bm_on$obs)
+um_on$sd <- as.factor(um_on$sd)
+um_on$obs <- as.factor(um_on$obs)
 
-bm_on.summary <- bm_on %>% 
+um_on.summary <- um_on %>% 
   group_by(obs, sd, estimator) %>% 
   summarize(count = n(), meanonset = mean(estimate), meandis = mean(distance),
             meanci = mean(ci), meanhighci = mean(highci), meanlowci = mean(lowci))
 
-bm_on.summary.pass <- bm_on %>% 
+um_on.summary.pass <- um_on %>% 
   group_by(obs, sd, estimator, pass) %>% 
   summarize(count = n(), meanonset = mean(estimate), meandis = mean(distance),
             meanci = mean(ci), meanhighci = mean(highci), meanlowci = mean(lowci))
 
 # 10 obs
 
-bm_on.summary.10 <- bm_on.summary %>% 
+um_on.summary.10 <- um_on.summary %>% 
   filter(obs == "10") %>% 
   mutate(uid = paste(estimator, obs, sd))
 
-ggplot(bm_on.summary.10, aes(x = uid, y = meanonset)) + 
+ggplot(um_on.summary.10, aes(x = uid, y = meanonset)) + 
   geom_bar(stat = "identity", aes(fill = sd), alpha = 0.65) +
-  scale_fill_manual(values = c("cyan3", "navy")) +
-  geom_hline(aes(yintercept = c(113.29)), color = "cyan3") +
-  geom_hline(aes(yintercept = c(76.58)), color = "blue") + 
+  scale_fill_manual(values = c("cyan3", "red", "navy")) +
+  geom_hline(aes(yintercept = c(162.68)), color = "cyan3") +
+  geom_hline(aes(yintercept = c(119.92)), color = "red") +
+  geom_hline(aes(yintercept = c(35.88)), color = "blue") + 
   geom_errorbar(aes(ymin = meanlowci, ymax = meanhighci)) +
   theme_classic()
 
-bm_on.10 <- bm_on %>% 
+um_on.10 <- um_on %>% 
   filter(obs == "10") %>% 
   mutate(uid = paste(estimator, obs, sd))
 
-bmonset_10obs <- ggplot(bm_on.10) +
+umonset_10obs <- ggplot(um_on.10) +
   geom_boxplot(aes(x = uid, y = estimate, color = sd, fill = estimator)) + 
   scale_fill_manual(values = c("light grey", "white")) +
-  scale_color_manual(values = c("cyan3", "navy")) +
-  geom_hline(aes(yintercept = c(113.29)), color = "cyan3") +
-  geom_hline(aes(yintercept = c(76.58)), color = "blue") + 
-  scale_y_continuous(expand = c(0,0)) +
+  scale_color_manual(values = c("cyan3", "red", "navy")) +
+  geom_hline(aes(yintercept = c(162.68)), color = "cyan3") +
+  geom_hline(aes(yintercept = c(119.92)), color = "red") +
+  geom_hline(aes(yintercept = c(35.88)), color = "blue") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,200)) +
   ggtitle(label = "10 Observations", subtitle = "Lines are True Onset, Points are Outliers") +
   labs(x = "Observations SD", y = "Onset Estimates of 30 Trials") +
-  theme_classic()
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 # 20 obs
 
-bm_onset.20 <- bm_on %>% 
+um_onset.20 <- um_on %>% 
   filter(obs == "20") %>% 
   mutate(uid = paste(estimator, obs, sd))
 
-bmonset_20obs <- ggplot(bm_onset.20) +
+umonset_20obs <- ggplot(um_onset.20) +
   geom_boxplot(aes(x = uid, y = estimate, color = sd, fill = estimator)) + 
   scale_fill_manual(values = c("light grey", "white")) +
-  scale_color_manual(values = c("cyan3", "navy")) +
-  geom_hline(aes(yintercept = c(113.29)), color = "cyan3") +
-  geom_hline(aes(yintercept = c(76.58)), color = "blue") + 
-  scale_y_continuous(expand = c(0,0)) +
+  scale_color_manual(values = c("cyan3", "red", "navy")) +
+  geom_hline(aes(yintercept = c(162.68)), color = "cyan3") +
+  geom_hline(aes(yintercept = c(119.92)), color = "red") +
+geom_hline(aes(yintercept = c(35.88)), color = "blue") +
+  scale_y_continuous(expand = c(0,0), limits = c(0,200)) +
   ggtitle(label = "20 Observations", subtitle = "Lines are True onset, Points are Outliers") +
   labs(x = "Observations SD", y = "Onset % Estimates of 30 Trials") +
-  theme_classic()
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 # 50 obs
 
-bm_onset.50 <- bm_on %>% 
+um_onset.50 <- um_on %>% 
   filter(obs == "50") %>% 
   mutate(uid = paste(estimator, obs, sd))
 
-bmonset_50obs <- ggplot(bm_onset.50) +
+umonset_50obs <- ggplot(um_onset.50) +
   geom_boxplot(aes(x = uid, y = estimate, color = sd, fill = estimator)) + 
   scale_fill_manual(values = c("light grey", "white")) +
-  scale_color_manual(values = c("cyan3", "navy")) +
-  geom_hline(aes(yintercept = c(113.29)), color = "cyan3") +
-  geom_hline(aes(yintercept = c(76.58)), color = "blue") + 
-  scale_y_continuous(expand = c(0,0)) +
+  scale_color_manual(values = c("cyan3", "red", "navy")) +
+  geom_hline(aes(yintercept = c(162.68)), color = "cyan3") +
+  geom_hline(aes(yintercept = c(119.92)), color = "red") +
+geom_hline(aes(yintercept = c(35.88)), color = "blue") +
+  scale_y_continuous(expand = c(0,0), limits = c(0,200)) +
   ggtitle(label = "50 Observations", subtitle = "Lines are True onset, Points are Outliers") +
   labs(x = "Observations SD", y = "Onset % Estimates of 30 Trials") +
-  theme_classic()
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-bm_onset_cp <- cowplot::plot_grid(bmonset_10obs, bmonset_20obs, bmonset_50obs)
+um_onset_cp <- cowplot::plot_grid(umonset_10obs, umonset_20obs, umonset_50obs)
 
 # pass summary
 
-bm_onset_pass_sum <- bm_on %>% 
+um_onset_pass_sum <- um_on %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
   summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
 
-bm_onset_pass_sum <- bm_onset_pass_sum %>% 
+um_onset_pass_sum <- um_onset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30)
 
-ggplot(bm_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+ggplot(um_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True Onset") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ggplot(bm_onset_pass_sum, aes(x = uid, y = percent_right)) +
+ggplot(um_onset_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true onset fall within the CIs?") + 
@@ -109,5 +116,3 @@ ggplot(bm_onset_pass_sum, aes(x = uid, y = percent_right)) +
   theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-
-            
