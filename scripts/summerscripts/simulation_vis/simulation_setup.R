@@ -1,3 +1,5 @@
+library(truncnorm)
+
 # set up simulation
 
 nn <- 20000
