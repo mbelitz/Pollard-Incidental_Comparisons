@@ -24,7 +24,7 @@ source("scripts/summerscripts/simulation_vis/unimodal_ninty_vis.R")
 
 ```
 
-## Unimodal Distribution
+# Unimodal Distribution
 
 ```{r simulation setup, echo=FALSE, include=FALSE}
 set.seed(10)
@@ -41,30 +41,31 @@ to_40sd <- as.data.frame(obs_40sd)
 ```
 
 
-# Below are the simulated distributions of three hypothetical species. 
+## Below are the simulated distributions of three hypothetical species. 
 
-The first represents a species that is univoltine and has a fairly narrow flight length (Mean 200, 10 SD).
+The distributions all have a mean of 200.
+The standard deviations are 10 [Fig. 1], 20 [Fig. 2], and 40 [Fig. 3]
 
 ```{r, echo=FALSE}
 tensd <- ggplot(data= to_10sd, aes(x = obs_10sd)) + geom_histogram(bins = 150)
 tensd
 ```
 
-
-The next represents a species with a longer flight length (Mean 200, 20 SD).
+Fig. 1 Distribution of number of adult individualsof a species that has a single peak and the most narrow flight length, although it is still 76 days from onset to offset (onset = 162; 10% = 186.99; 50% = 199.89; 90% = 212.76; max = 238.1).
 
 ```{r, echo=FALSE}
 twentysd <- ggplot(data= to_20sd, aes(x = obs_20sd)) + geom_histogram(bins = 150)
 twentysd
 ```
+Fig. 2 Distribution of number of adult individuals of a species that has a single peak and has the middle flight length. In total the flight length is 159 days (onset = 119.68; 10% = 174.82; 50% = 200.19; 90% = 225.60; max = 279.35).
 
-And the third would more likely be a species that flies year long with overlapping broods but has one peak in density (Mean 200, 40 SD). 
 
 ```{r, echo=FALSE}
 fortysd <- ggplot(data= to_40sd, aes(x = obs_40sd)) + geom_histogram(bins = 150)
 fortysd
 ```
 
+Fig. 3 Distribution of number of adult individuals of 
 # Results of unimodal simulation
 
 # Onset
