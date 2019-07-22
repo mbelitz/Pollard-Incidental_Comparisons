@@ -65,7 +65,8 @@ fortysd <- ggplot(data= to_40sd, aes(x = obs_40sd)) + geom_histogram(bins = 150)
 fortysd
 ```
 
-Fig. 3 Distribution of number of adult individuals of 
+Fig. 3 Distribution of number of adult individuals of a species that has a single peak and the longest flight length of the three single peak distributions we are examing. The flight length lasts almost the entiire year (onset = 35.88112, 10% = 149.30459; 50% = 199.80307; 90% = 251.79269; offset = 361.37887).
+
 # Results of unimodal simulation
 
 # Onset
