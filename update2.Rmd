@@ -1,7 +1,7 @@
 ---
 title: "Simulation Update"
 author: "Michael W Belitz"
-date: "July 11, 2019"
+date: "July 23, 2019"
 output: pdf_document
 ---
 
@@ -47,21 +47,30 @@ The distributions all have a mean of 200.
 The standard deviations are 10 [Fig. 1], 20 [Fig. 2], and 40 [Fig. 3]
 
 ```{r, echo=FALSE}
-tensd <- ggplot(data= to_10sd, aes(x = obs_10sd)) + geom_histogram(bins = 150)
+tensd <- ggplot(data= to_10sd, aes(x = obs_10sd)) + 
+  geom_histogram(bins = 150) +
+  labs(x = "Day of Year", y = "Number of Individuals") +
+  ggtitle("SD = 10")
 tensd
 ```
 
-Fig. 1 Distribution of number of adult individualsof a species that has a single peak and the most narrow flight length, although it is still 76 days from onset to offset (onset = 162; 10% = 186.99; 50% = 199.89; 90% = 212.76; max = 238.1).
+Fig. 1 Distribution of number of adult individual sof a species that has a single peak and the most narrow flight length, although it is still 76 days from onset to offset (onset = 162; 10% = 186.99; 50% = 199.89; 90% = 212.76; max = 238.1).
 
 ```{r, echo=FALSE}
-twentysd <- ggplot(data= to_20sd, aes(x = obs_20sd)) + geom_histogram(bins = 150)
+twentysd <- ggplot(data= to_20sd, aes(x = obs_20sd)) + 
+  geom_histogram(bins = 150) +
+  labs(x = "Day of Year", y = "Number of Individuals") +
+  ggtitle("SD = 20")
 twentysd
 ```
 Fig. 2 Distribution of number of adult individuals of a species that has a single peak and has the middle flight length. In total the flight length is 159 days (onset = 119.68; 10% = 174.82; 50% = 200.19; 90% = 225.60; max = 279.35).
 
 
 ```{r, echo=FALSE}
-fortysd <- ggplot(data= to_40sd, aes(x = obs_40sd)) + geom_histogram(bins = 150)
+fortysd <- ggplot(data= to_40sd, aes(x = obs_40sd)) + 
+  geom_histogram(bins = 150) +
+  labs(x = "Day of Year", y = "Number of Individuals") +
+  ggtitle("SD = 40")
 fortysd
 ```
 
@@ -69,66 +78,90 @@ Fig. 3 Distribution of number of adult individuals of a species that has a singl
 
 # Results of unimodal simulation
 
-# Onset
+## Onset
 
-For onset and offset estimates, I compared estimates derived from my biased-correcte weibull estimator to Will Pearse's R package. My estimator is similar in the MLE estimate but has smaller CIs. 
+For onset and offset estimates, I compared estimates derived from my biased-corrected weibull estimator to Will Pearse's R package. My estimator is similar in the MLE estimate but has smaller CIs. The Pearse estimator is much faster than my estimator because it has a analytical solution, which is its big advantage. However, we show that onset and offset may not be the pheno-metrics that can be most reliably estimated. 
 
-```{r onset, echo=FALSE}
+```{r onset, echo=FALSE, fig.height=8, fig.width=10}
 plot(um_onset_cp)
 ```
+Fig. 4 Box plots showing the estimates of 30 random observation iterations per observation-sd combination. The line within the boxplot is median estimate of the 30 iterations, and the ends of the box show the upper and lower quartiles. The extreme lines show the highest and lowest estimates, excluding outliers which are displayed with points. The true onset for each distribution (10 SD, 20 SD, and 40 SD) is represented by the colored horizontal lines. In general, the estimators over-estimated the onset. The smaller the SD in the distribution, the closer the estimates are to the true onset. Increasing the number of observations marginally improves the estimates. 
 
-Although both estimators perform similar in how many days away they estimate from the "true onset", Pearse's CI include the "true onset" more often because of the much larger CI.
 
-```{r, echo=FALSE}
+I calculated "days from true onset" by taking the absolute value of the onset estimate and subtracting by the true onset. Although both estimators perform similar in how many days away they estimate from the "true onset", Pearse's CI include the "true onset" more often because of the much larger CI.
+
+```{r, echo=FALSE, fig.height=8, fig.width=7}
 plot(uo)
 ```
+Fig. 5 Average calculated days from true onset metric and average 95% confidence interval shown for the 30 iterations representing each Observation-SD combination. Increasing the SD increased the days from true onset and increasing the number of observations decreased the days from the true onset. However, increasing the number of observations actually decreased the percent of estimates that fall within the CIs because the CI decrease with the increasing number of observations.
 
-# Tenth
 
-My estimator does better at estimatin the 10 percentile than onset.  
+## Tenth
 
-```{r tenth, echo=FALSE}
+My estimator does better at estimatin the 10 percentile of the distribution than estimating onset (min).  
+
+```{r tenth, echo=FALSE, fig.height=8, fig.width=10}
 plot(um_10_cp)
 ```
+Fig. 6 The estimates of the 10th percentile for 10 SD are around the true tenth percentile. Increasing SD decreases the accurracy of the estimates. Increasing observations slightly increases the precision of the estimates.
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4}
 plot(ut)
 ```
 
-# Median
+Fig.7 On average, even with 40 SD, the estimate is within 10 days from the true tenth. However, at 10 obs and 40 SD, the estimate can be 40 days off. The CI of the 10 percentile estimates does capture the true tenth much frequently than the onset estimates. 
+
+## Median
 
 Median Estimates are even better.
 
-```{r median, echo=FALSE}
+```{r median, echo=FALSE, echo=FALSE, fig.height=8, fig.width=10}
 plot(um_50_cp)
 ```
+Fig.8 True median is ~200 for all three distributions. Similar trends to the other boxplots. 
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE,fig.width=8, fig.height=4}
 plot(um)
 
 ```
 
-# Ninety
+Fig. 9 Similar trend as 10 percentile estimates with slightly improved estimates.
 
-```{r ninty, echo=FALSE}
+## Ninety
+
+Ninety was performing even better than 10% which, I thought they would be the same. This made me dig back to the code that I wrote to write the estimator function and realized a small error that could lead to the estimator being slightly biased towards later DOY estimates. So I fixed the error. Used a different estimator function for the bimodal distributions. 
+
+```{r ninty, echo=FALSE, fig.width=10, fig.height=9}
 plot(um_90_cp)
 ```
+Fig. 10 Estimates of 90 percentile compared to true 90th percentile of distributions. 
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, fig.width=8, fig.height=4}
 plot(un)
 ```
 
-# Offset 
+Fig. 11 More prominent display of increasing precision with increasing observations. 
 
-```{r offset, echo=FALSE}
+## Offset 
+
+Offset again proves more challenging to estimate than 10, 50, or 90 percentiles. Also, my estimator outperformed Pearse's, which also helped convince me something was wrong in my function code. 
+
+```{r offset, echo=FALSE, fig.width=10, fig.height=9}
 plot(um_offset_cp)
 ```
 
-```{r, echo=FALSE}
+Fig. 12 Offset estimates
+
+```{r, echo=FALSE, fig.height=8, fig.width=7}
 plot(uf)
 ```
+Fig. 13 Notice how an increase in observations decreases days from true onset (in most cases), but decreases the percent of estimates that capture the true offset within the CIs. 
 
-## Bimodal Distribution
+
+# Bimodal Distribution
 
 ```{r bimodal simulation setup, echo=FALSE, include=FALSE}
 nn <- 20000
@@ -145,76 +178,103 @@ sim_20sd_df <- as.data.frame(sims_20sd)
 ```
 
 
-# Below are the simulated distributions of two hypothetical species. 
+## Below are the simulated distributions of two hypothetical species. 
 
-The first represents a species that is Bivoltine with 2/3 of its population density occurring in the second flight peak and overall a narrow flight length per brood that has little overlap (Mean 150 and 220, 10 SD).
+The first represents a species that is bi-voltine with 2/3 of its population density occurring in the second flight peak and overall a narrow flight length per brood that has little overlap (Mean 150 and 220, 10 SD).
 
 ```{r, echo=FALSE}
-bmtsd <- ggplot(data= sim_10sd_df, aes(x = sims_10sd)) + geom_histogram(bins = 150)
+bmtsd <- ggplot(data= sim_10sd_df, aes(x = sims_10sd)) + 
+  geom_histogram(bins = 150) +
+  labs(x = "Day of Year", y = "Number of Individuals") +
+  ggtitle("SD = 10")
 bmtsd
 ```
 
+Fig. 14 Onset = 113.29, 10% = 144.65, 50% = 213.21, 90% = 230.27, 100% = 257.28
 
 The next represents a species with a longer flight length, so more overlap between the two broods (Mean 150 and 220, 20 SD).
 
 ```{r, echo=FALSE}
-bmtwsd <- ggplot(data= sim_20sd_df, aes(x = sims_20sd)) + geom_histogram(bins = 150)
+bmtwsd <- ggplot(data= sim_20sd_df, aes(x = sims_20sd)) + 
+  geom_histogram(bins = 150)+
+  labs(x = "Day of Year", y = "Number of Individuals") +
+  ggtitle("SD = 20")
 bmtwsd
 ```
 
+Fig. 15 onset = 76.58, 10% = 139.29, 50% = 206.48, 90% = 240.55, 100% = 294.56
+
 # Results of Bimodal simulation
 
-# Onset
+## Onset
 
-```{r onset2, echo=FALSE}
+```{r onset2, echo=FALSE,  fig.width=10, fig.height=9}
 plot(bm_onset_cp)
 ```
+Fig. 16 For onset, it appears that onset can be estimated with greater accurracy when there are the two seperate flight periods (10 SD).
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE ,fig.height=6, fig.width=10}
 plot(bo)
 ```
 
+Fig. 17 My estimator does a similar job predicting onset as Pearse's estimator, but Pearse how much larger CI. Therefore, his estimator encapsulates the true onset more often. Interestingly because the precision increases with more observations with the Pearse estimator, but less so with the Belitz estimator, an increase in observations decreases the percent of estimates that encapsulate the true onset with Pearse's estimator but increases with the Belitz estimator. 
+
 # Tenth
 
-My estimator does better at estimatin the 10 percentile than onset.  
+The tenth percentile estimates are noticeably better than the onset estimates for the overlapping broods (20 SD), but the improvement (if any) is less clear with the 10 SD distribution.  
 
-```{r tenth2, echo=FALSE}
+```{r tenth2, echo=FALSE, fig.width=10, fig.height=9}
 plot(bm_10_cp)
 ```
+Fig. 18 It appears that when using the 10th percentile, having a a bimodal distribution of more overlap may produce more reliable estimates.
 
 ```{r, echo=FALSE}
 plot(bt)
 ```
+Fig. 19 With this figure, it suggests that the overall accuracy of the 10th percentile estimates improve upon the onset estimates. 
+
 
 # Median
 
 Median Estimates 
 
-```{r median2, echo=FALSE}
+```{r median2, echo=FALSE, fig.width=10, fig.height=9}
 plot(bm_50_cp)
 ```
-
-```{r, echo=FALSE}
+Fig. 20 Median is less reliable than 10%, especially when there is two distinct peaks (10 SD).
+```{r, echo=FALSE,  fig.width=8, fig.height=4}
 plot(bm)
 
 ```
-
+Fig. 21 Due to the distrubtion being back-weighted with more individuals in the second flight period, more observations, just seems to decrease the CI but keep the estimates at around the same DOY, which is consistently below the true median. 
 # Ninety
 
-```{r ninty2, echo=FALSE}
+The ninety percentile estimates are more precise and accurrate than the other estimates tried so far for the bi-modal distribution. The extra-weighting of more individuals being in the second flight periods contribute to this phenomena.
+
+```{r ninty2, echo=FALSE, fig.width=10, fig.height=9}
 plot(bm_90_cp)
 ```
 
-```{r, echo=FALSE}
+Fig. 22 Ninty percentile estimates 
+
+```{r, echo=FALSE, fig.width=8, fig.height=4}
 plot(bn)
 ```
 
+Fig. 23 The ninty percentile estimate has larger CI in the 20 SD, making more estimates encapsulate the true ninty number, even thought the estiamtes are only slightly more accurate. 
+
 # Offset 
 
-```{r offset2, echo=FALSE}
+Offset does worse than 90%
+
+```{r offset2, echo=FALSE, fig.width=10, fig.height=9}
 plot(bm_offset_cp)
 ```
+Fig. 24 Offset estimates for bimodal distributions
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=10, fig.height=4}
 plot(bf)
 ```
+
+Fig. 25 Offset estimates do not do a good job of predicting true offset compared other pheno-metrics we estimated for the bimodal distributions. 

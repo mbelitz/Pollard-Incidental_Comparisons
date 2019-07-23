@@ -4,7 +4,7 @@ library(cowplot)
 
 # set up sims
 
-bm_offset <- read.csv("simulation_outputs/bimodal_pearseoffset_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+bm_offset <- read.csv("simulation_outputs/bimodal_offset_sims.csv", stringsAsFactors = FALSE, header = TRUE)
 
 bm_offset$sd <- as.factor(bm_offset$sd)
 bm_offset$obs <- as.factor(bm_offset$obs)
@@ -96,7 +96,7 @@ bm_offsetset_pass_sum <- bm_offsetset_pass_sum %>%
   mutate(percent_right = pass / 30)
 
 bf_dis <- ggplot(bm_offsetset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", aes(fill = estimator)) +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True offset") + 
   theme_classic() +
@@ -110,5 +110,4 @@ bf_corr <- ggplot(bm_offsetset_pass_sum, aes(x = uid, y = percent_right)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-bf <- plot_grid(bf_dis, bf_corr, rel_widths = 1, rel_heights = 1.4)
-
+bf <- plot_grid(bf_dis, bf_corr)
