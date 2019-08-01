@@ -92,7 +92,8 @@ bm_onset_pass_sum <- bm_on %>%
 
 bm_onset_pass_sum <- bm_onset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "bimodal onset")
 
 bo_dis <- ggplot(bm_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = estimator)) +

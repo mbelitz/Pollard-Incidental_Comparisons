@@ -100,7 +100,8 @@ um_ninty_pass_sum <- um_ninty %>%
 
 um_ninty_pass_sum <- um_ninty_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "unimodal ninty")
 
 un_dis <- ggplot(um_ninty_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = sd)) +

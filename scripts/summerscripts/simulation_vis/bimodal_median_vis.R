@@ -91,9 +91,10 @@ bm_medianset_pass_sum <- bm_median %>%
   group_by(estimator, sd, obs) %>% 
   summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
 
-bm_medianset_pass_sum <- bm_medianset_pass_sum %>% 
+bm_median_pass_sum <- bm_medianset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "bimodal median")
 
 bm_dis <- ggplot(bm_medianset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +

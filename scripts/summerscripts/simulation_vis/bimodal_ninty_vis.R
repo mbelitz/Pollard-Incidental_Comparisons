@@ -91,9 +91,10 @@ bm_nintyset_pass_sum <- bm_ninty %>%
   group_by(estimator, sd, obs) %>% 
   summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
 
-bm_nintyset_pass_sum <- bm_nintyset_pass_sum %>% 
+bm_ninty_pass_sum <- bm_nintyset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "bimodal ninty")
 
 bn_dis <- ggplot(bm_nintyset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +

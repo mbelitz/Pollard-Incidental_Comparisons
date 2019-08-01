@@ -100,7 +100,8 @@ um_median_pass_sum <- um_median %>%
 
 um_median_pass_sum <- um_median_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "unimodal median")
 
 um_dis <- ggplot(um_median_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = sd)) +

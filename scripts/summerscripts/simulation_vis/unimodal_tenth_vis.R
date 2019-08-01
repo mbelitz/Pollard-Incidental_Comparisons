@@ -102,7 +102,8 @@ um_tenth_pass_sum$pass[9] <-  17
 
 um_tenth_pass_sum <- um_tenth_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 20)
+  mutate(percent_right = pass / 20) %>% 
+  mutate(perc = "unimodal tenth")
 
 ut_dis <- ggplot(um_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = sd)) +

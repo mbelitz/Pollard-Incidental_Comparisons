@@ -99,7 +99,8 @@ um_onset_pass_sum <- um_on %>%
 
 um_onset_pass_sum <- um_onset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "unimodal onset")
 
 uo_dis <- ggplot(um_onset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = estimator)) +

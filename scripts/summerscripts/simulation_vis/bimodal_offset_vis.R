@@ -91,9 +91,10 @@ bm_offsetset_pass_sum <- bm_offset %>%
   group_by(estimator, sd, obs) %>% 
   summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
 
-bm_offsetset_pass_sum <- bm_offsetset_pass_sum %>% 
+bm_offset_pass_sum <- bm_offsetset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "bimodal offset")
 
 bf_dis <- ggplot(bm_offsetset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity", aes(fill = estimator)) +

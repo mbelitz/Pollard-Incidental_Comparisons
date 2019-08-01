@@ -93,7 +93,8 @@ bm_tenthset_pass_sum <- bm_tenth %>%
 
 bm_tenthset_pass_sum <- bm_tenthset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 30)
+  mutate(percent_right = pass / 30) %>% 
+  mutate(perc = "unimodal tenth")
 
 ggplot(bm_tenthset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
