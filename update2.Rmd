@@ -278,3 +278,49 @@ plot(bf)
 ```
 
 Fig. 25 Offset estimates do not do a good job of predicting true offset compared other pheno-metrics we estimated for the bimodal distributions. 
+
+# Total Summaries
+```{r total summaries} 
+
+total_pass_sum <- rbind(um_tenth_pass_sum, um_onset_pass_sum, um_median_pass_sum,
+                        um_ninty_pass_sum, um_offset_pass_sum, bm_onset_pass_sum,
+                        bm_tenth_pass_sum, bm_median_pass_sum, bm_ninty_pass_sum,
+                        bm_offset_pass_sum)
+
+total_pass_sum_nopearse <- total_pass_sum %>% 
+  dplyr::filter(estimator != "pearse")
+
+total_dis <- ggplot(total_pass_sum_nopearse, aes(x = uid, y = abs(mean_dis))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  labs(x = "SD - Observations", y = "Days from True Value") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ perc)
+
+total_dis
+```
+
+```{r}
+total_pass_sum <- rbind(um_tenth_pass_sum, um_onset_pass_sum, um_median_pass_sum,
+                        um_ninty_pass_sum, um_offset_pass_sum, bm_onset_pass_sum,
+                        bm_tenth_pass_sum, bm_median_pass_sum, bm_ninty_pass_sum,
+                        bm_offset_pass_sum)
+
+total_pass_sum_nopearse <- total_pass_sum %>% 
+  dplyr::filter(estimator != "pearse")
+
+total_corr <- ggplot(total_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "SD - Observations", y = "Percent of Estimates") + 
+  ggtitle("Does the true value fall within the CIs?") + 
+  scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~perc)
+
+total_corr
+```
+
+
+
