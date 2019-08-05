@@ -308,7 +308,10 @@ total_pass_sum <- rbind(um_tenth_pass_sum, um_onset_pass_sum, um_median_pass_sum
                         bm_offset_pass_sum)
 
 total_pass_sum_nopearse <- total_pass_sum %>% 
-  dplyr::filter(estimator != "pearse")
+  dplyr::filter(estimator != "pearse") %>% 
+  dplyr::mutate(perc = factor(perc, levels = c("unimodal onset", "unimodal tenth",
+                             "unimodal median", "unimodal ninty", "unimodal offset",
+                             "bimodal onset", "bimodal tenth", "bimodal median", "bimodal ninty", "bimodal offset")))
 
 total_corr <- ggplot(total_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
   geom_bar(stat = "identity", aes(fill = sd)) +
@@ -318,9 +321,71 @@ total_corr <- ggplot(total_pass_sum_nopearse, aes(x = uid, y = abs(percent_right
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   facet_wrap(~perc)
-
-total_corr
 ```
 
+```{r, fig.width=10, fig.height=4}
+unimodal_pass_sum <- rbind(um_tenth_pass_sum, um_onset_pass_sum, um_median_pass_sum,
+                        um_ninty_pass_sum, um_offset_pass_sum)
+bimodal_pass_sum <- rbind(bm_onset_pass_sum, bm_tenth_pass_sum, bm_median_pass_sum, bm_ninty_pass_sum,
+                        bm_offset_pass_sum)
 
+um_pass_sum_nopearse <- unimodal_pass_sum %>% 
+  dplyr::filter(estimator != "pearse") %>% 
+  dplyr::mutate(perc = factor(perc, levels = c("unimodal onset", "unimodal tenth",
+                             "unimodal median", "unimodal ninty", "unimodal offset")))
+
+bm_pass_sum_nopearse <- bimodal_pass_sum %>% 
+  dplyr::filter(estimator != "pearse") %>% 
+  dplyr::mutate(perc = factor(perc, levels = c("bimodal onset", "bimodal tenth",
+                             "bimodal median", "bimodal ninty", "bimodal offset")))
+
+um_corr <- ggplot(um_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "SD - Observations", y = "Percent of Estimates") + 
+  ggtitle("Does the true value fall within the CIs?") + 
+  scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~perc)
+
+bm_corr <- ggplot(bm_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "SD - Observations", y = "Percent of Estimates") + 
+  ggtitle("Does the true value fall within the CIs?") + 
+  scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
+  scale_fill_manual(values = c("#F8766D", "#00BA38")) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~perc)
+
+total_corr <- cowplot::plot_grid(um_corr, bm_corr)
+
+total_corr
+
+```
+
+```{r,  fig.width=12, fig.height=5}
+um_dis <- ggplot(um_pass_sum_nopearse, aes(x = uid, y = abs(mean_dis))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "SD - Observations", y = "Number of Days from True Value") + 
+  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  ggtitle("Accuracy of Estimator") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~perc)
+
+bm_dis <- ggplot(bm_pass_sum_nopearse, aes(x = uid, y = abs(mean_dis))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  labs(x = "SD - Observations", y = "Percent of Estimates") + 
+  ggtitle("Does the true value fall within the CIs?") +
+  scale_fill_manual(values = c("#F8766D", "#00BA38")) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~perc)
+
+total_dis <- cowplot::plot_grid(um_dis, bm_dis)
+
+total_dis
+```
 
