@@ -96,14 +96,14 @@ bm_tenth_pass_sum <- bm_tenthset_pass_sum %>%
   mutate(percent_right = pass / 30) %>% 
   mutate(perc = "bimodal tenth")
 
-bt_dis <- ggplot(bm_tenthset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+bt_dis <- ggplot(bm_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True tenth") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-bt_corr <- ggplot(bm_tenthset_pass_sum, aes(x = uid, y = percent_right)) +
+bt_corr <- ggplot(bm_tenth_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = sd)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true tenth fall within the CIs?") + 

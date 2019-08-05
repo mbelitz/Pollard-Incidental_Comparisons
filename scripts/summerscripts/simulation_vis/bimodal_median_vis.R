@@ -96,14 +96,14 @@ bm_median_pass_sum <- bm_medianset_pass_sum %>%
   mutate(percent_right = pass / 30) %>% 
   mutate(perc = "bimodal median")
 
-bm_dis <- ggplot(bm_medianset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+bm_dis <- ggplot(bm_median_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
   labs(x = "SD - Observations", y = "Days from True median") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-bm_corr <- ggplot(bm_medianset_pass_sum, aes(x = uid, y = percent_right)) +
+bm_corr <- ggplot(bm_median_pass_sum, aes(x = uid, y = percent_right)) +
   geom_bar(stat = "identity", aes(fill = sd)) +
   labs(x = "SD - Observations", y = "Percent of Estimates") + 
   ggtitle("Does the true median fall within the CIs?") + 
