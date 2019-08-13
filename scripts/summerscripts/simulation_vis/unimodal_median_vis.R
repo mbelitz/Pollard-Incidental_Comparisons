@@ -3,7 +3,7 @@ library(ggplot2)
 
 # set up sims
 
-um_median <- read.csv("simulation_outputs/unimodal_median_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+um_median <- read.csv("simulation_outputs/onset_try2/unimodal_median_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
 
 um_median$sd <- as.factor(um_median$sd)
 um_median$obs <- as.factor(um_median$obs)

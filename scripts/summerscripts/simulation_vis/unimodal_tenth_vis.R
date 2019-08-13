@@ -3,7 +3,7 @@ library(ggplot2)
 
 # set up sims
 
-um_tenth <- read.csv("simulation_outputs/unimodal_tenth_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+um_tenth <- read.csv("simulation_outputs/onset_try2/unimodal_tenth_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
 
 um_tenth$sd <- as.factor(um_tenth$sd)
 um_tenth$obs <- as.factor(um_tenth$obs)

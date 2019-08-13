@@ -3,7 +3,7 @@ library(ggplot2)
 
 # set up sims
 
-um_ninty <- read.csv("simulation_outputs/unimodal_ninty_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+um_ninty <- read.csv("simulation_outputs/onset_try2/unimodal_ninty_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
 
 um_ninty$sd <- as.factor(um_ninty$sd)
 um_ninty$obs <- as.factor(um_ninty$obs)

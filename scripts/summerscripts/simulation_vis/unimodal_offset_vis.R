@@ -3,7 +3,7 @@ library(ggplot2)
 
 # set up sims
 
-um_offset <- read.csv("simulation_outputs/unimodal_offset_sims.csv", stringsAsFactors = FALSE, header = TRUE)
+um_offset <- read.csv("simulation_outputs/onset_try2/unimodal_offset_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
 
 um_offset$sd <- as.factor(um_offset$sd)
 um_offset$obs <- as.factor(um_offset$obs)
