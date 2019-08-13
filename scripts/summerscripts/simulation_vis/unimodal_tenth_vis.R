@@ -98,11 +98,9 @@ um_tenth_pass_sum <- um_tenth %>%
   group_by(estimator, sd, obs) %>% 
   summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
 
-um_tenth_pass_sum$pass[9] <-  17
-
 um_tenth_pass_sum <- um_tenth_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
-  mutate(percent_right = pass / 20) %>% 
+  mutate(percent_right = pass / 30) %>% 
   mutate(perc = "unimodal tenth")
 
 ut_dis <- ggplot(um_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
@@ -120,4 +118,4 @@ ut_corr <- ggplot(um_tenth_pass_sum, aes(x = uid, y = percent_right)) +
   theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-ut <- plot_grid(ut_dis, ut_corr, rel_widths = 1, rel_heights = 1.5)
+ut <- cowplot::plot_grid(ut_dis, ut_corr, rel_widths = 1, rel_heights = 1.5)
