@@ -57,3 +57,5 @@ ebutterfly_tidy <- ebutterfly_tidy %>%
 
 # combine data sets
 total_buts <- rbind(inat_adults, ebutterfly_tidy)
+
+write.csv(total_buts, file = "outputs/total_buts.csv", row.names = FALSE)
