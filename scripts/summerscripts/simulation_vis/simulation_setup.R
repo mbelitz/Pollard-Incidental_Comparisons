@@ -1,4 +1,5 @@
 library(truncnorm)
+library(ggplot2)
 
 # set up simulation
 
