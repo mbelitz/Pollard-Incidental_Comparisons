@@ -1,2 +1,5 @@
-year,latitude,longitude,estimate,low_ci,high_ci
-2018,38.5,-90.5,185.78,170.1,193.07
+scientificName,year,latitude,longitude,estimate,low_ci,high_ci
+Asterocampa celtis,2018,38.5,-90.5,185.78,170.1,193.07
+Papilio troilus,2018,38.5,-90.5,159.8,133.29,213.42
+Papilio troilus,2016,38.5,-77.5,140.78,121.91,213.42
+Papilio troilus,2017,38.5,-77.5,110.57,83.69,136.32
