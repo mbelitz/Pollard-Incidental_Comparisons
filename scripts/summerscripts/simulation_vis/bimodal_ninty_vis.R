@@ -89,7 +89,7 @@ bm_90_cp <- cowplot::plot_grid(bmninty_10obs, bmninty_20obs, bmninty_50obs)
 bm_nintyset_pass_sum <- bm_ninty %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
 
 bm_ninty_pass_sum <- bm_nintyset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
@@ -98,7 +98,7 @@ bm_ninty_pass_sum <- bm_nintyset_pass_sum %>%
 
 bn_dis <- ggplot(bm_ninty_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  geom_errorbar(aes(ymin = abs(mean_dis) - sd_dis, ymax = abs(mean_dis) +sd_dis)) +
   labs(x = "SD - Observations", y = "Days from True ninty") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 

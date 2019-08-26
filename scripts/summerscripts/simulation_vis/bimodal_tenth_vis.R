@@ -89,7 +89,7 @@ bm_10_cp <- cowplot::plot_grid(bmtenth_10obs, bmtenth_20obs, bmtenth_50obs)
 bm_tenthset_pass_sum <- bm_tenth %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
 
 bm_tenth_pass_sum <- bm_tenthset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
@@ -98,7 +98,7 @@ bm_tenth_pass_sum <- bm_tenthset_pass_sum %>%
 
 bt_dis <- ggplot(bm_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
   geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  geom_errorbar(aes(ymin = abs(mean_dis) - sd_dis, ymax = abs(mean_dis) +sd_dis)) +
   labs(x = "SD - Observations", y = "Days from True tenth") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 

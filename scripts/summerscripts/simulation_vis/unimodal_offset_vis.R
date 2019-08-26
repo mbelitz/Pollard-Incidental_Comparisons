@@ -95,16 +95,16 @@ um_offset_cp <- cowplot::plot_grid(umoffset_10obs, umoffset_20obs, umoffset_50ob
 um_offset_pass_sum <- um_offset %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance, na.rm = TRUE))
 
 um_offset_pass_sum <- um_offset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30) %>% 
   mutate(perc = "unimodal offset")
 
-uf_dis <- ggplot(um_offset_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+uf_dis <- ggplot(um_offset_pass_sum, aes(x = uid, y = mean_dis)) +
   geom_bar(stat = "identity", aes(fill = estimator)) +
-  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  geom_errorbar(aes(ymin = mean_dis - sd_dis, ymax = mean_dis +sd_dis)) +
   labs(x = "SD - Observations", y = "Days from True offset") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 

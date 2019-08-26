@@ -96,16 +96,16 @@ um_10_cp <- cowplot::plot_grid(umtenth_10obs, umtenth_20obs, umtenth_50obs)
 um_tenth_pass_sum <- um_tenth %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
 
 um_tenth_pass_sum <- um_tenth_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30) %>% 
   mutate(perc = "unimodal tenth")
 
-ut_dis <- ggplot(um_tenth_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+ut_dis <- ggplot(um_tenth_pass_sum, aes(x = uid, y = mean_dis)) +
   geom_bar(stat = "identity", aes(fill = sd)) +
-  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  geom_errorbar(aes(ymin = mean_dis - sd_dis, ymax = mean_dis +sd_dis)) +
   labs(x = "SD - Observations", y = "Days from True tenth") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 

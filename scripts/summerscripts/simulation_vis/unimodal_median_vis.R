@@ -96,16 +96,16 @@ um_50_cp <- cowplot::plot_grid(ummedian_10obs, ummedian_20obs, ummedian_50obs)
 um_median_pass_sum <- um_median %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
 
 um_median_pass_sum <- um_median_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
   mutate(percent_right = pass / 30) %>% 
   mutate(perc = "unimodal median")
 
-um_dis <- ggplot(um_median_pass_sum, aes(x = uid, y = abs(mean_dis))) +
+um_dis <- ggplot(um_median_pass_sum, aes(x = uid, y = mean_dis)) +
   geom_bar(stat = "identity", aes(fill = sd)) +
-  geom_errorbar(aes(ymin = abs(mean_dis) - mean_ci/2, ymax = abs(mean_dis) + mean_ci/2)) +
+  geom_errorbar(aes(ymin = mean_dis - sd_dis, ymax = mean_dis +sd_dis)) +
   labs(x = "SD - Observations", y = "Days from True median") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
