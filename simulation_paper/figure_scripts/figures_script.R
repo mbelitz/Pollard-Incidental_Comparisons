@@ -69,5 +69,41 @@ total_dis <- gridExtra::grid.arrange(um_dis, bm_dis, nrow = 1,  top=textGrob("Ac
 
 total_dis
 
-write.csv()
+ggsave(filename = "simulation_paper/figure_outputs/Fig_1.png", plot = total_dis,
+      width = 12, height = 4, dpi = 300)
+
+### FIGURE 2
+
+um_corr <- ggplot(um_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "Number of Observations", y = "Percent of Estimates") + 
+  ggtitle("Unimodal Distribution") + 
+  scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
+  scale_fill_manual(values = c("#F8766D", "#00BFC4", "#C77CFF")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_bw() +
+  scale_x_discrete(labels = c("belitz 10 10" = "10", "belitz 10 20" = "20", "belitz 10 50" = "50",
+                              "belitz 20 10" = "10", "belitz 20 20" = "20", "belitz 20 50" = "50",
+                              "belitz 40 10" = "10", "belitz 40 20" = "20", "belitz 40 50" = "50")) +
+  facet_wrap(~perc) +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+bm_corr <- ggplot(bm_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
+  geom_bar(stat = "identity", aes(fill = sd)) +
+  labs(x = "Number of Observations", y = "Percent of Estimates") + 
+  ggtitle("Bimodal Distribution") + 
+  scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_bw() +
+  scale_x_discrete(labels = c("belitz 10 10" = "10", "belitz 10 20" = "20", "belitz 10 50" = "50",
+                              "belitz 20 10" = "10", "belitz 20 20" = "20", "belitz 20 50" = "50",
+                              "belitz 40 10" = "10", "belitz 40 20" = "20", "belitz 40 50" = "50")) +
+  facet_wrap(~perc) +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+total_corr <- gridExtra::grid.arrange(um_corr, bm_corr, nrow = 1,  top=textGrob("How often do the CIs Encompass the True Value",
+                                                                gp = gpar(fontsize = 20, font = 2)))
+
+ggsave(filename = "simulation_paper/figure_outputs/Fig_2.png", plot = total_corr,
+       width = 12, height = 4, dpi = 300)
 
