@@ -116,7 +116,7 @@ um_cis <- ggplot(um_pass_sum_nopearse) +
   geom_crossbar(aes(x = uid, y = 0, ymin = mean_low_ci, ymax = mean_high_ci, fill = sd)) +
   scale_fill_manual(values = c("#440154FF", "#287D8EFF", "#73D055FF")) +
   labs(x = "Number of Observations", y = "Length of Confidence Intervals") + 
-  ggtitle("Bimodal Distribution") + 
+  ggtitle("Unimodal Distribution") + 
   theme_bw() +
   scale_x_discrete(labels = c("belitz 10 10" = "10", "belitz 10 20" = "20", "belitz 10 50" = "50",
                               "belitz 20 10" = "10", "belitz 20 20" = "20", "belitz 20 50" = "50",
