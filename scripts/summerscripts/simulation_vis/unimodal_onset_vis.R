@@ -95,7 +95,8 @@ um_onset_cp <- cowplot::plot_grid(umonset_10obs, umonset_20obs, umonset_50obs)
 um_onset_pass_sum <- um_on %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
+            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
 
 um_onset_pass_sum <- um_onset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 

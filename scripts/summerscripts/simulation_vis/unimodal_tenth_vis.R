@@ -96,7 +96,8 @@ um_10_cp <- cowplot::plot_grid(umtenth_10obs, umtenth_20obs, umtenth_50obs)
 um_tenth_pass_sum <- um_tenth %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
+            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
 
 um_tenth_pass_sum <- um_tenth_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 

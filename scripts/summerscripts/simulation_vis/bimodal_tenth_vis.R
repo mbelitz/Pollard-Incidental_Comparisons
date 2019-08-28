@@ -89,7 +89,8 @@ bm_10_cp <- cowplot::plot_grid(bmtenth_10obs, bmtenth_20obs, bmtenth_50obs)
 bm_tenthset_pass_sum <- bm_tenth %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
+            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
 
 bm_tenth_pass_sum <- bm_tenthset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
