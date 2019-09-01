@@ -89,8 +89,9 @@ bm_90_cp <- cowplot::plot_grid(bmninty_10obs, bmninty_20obs, bmninty_50obs)
 bm_nintyset_pass_sum <- bm_ninty %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
-            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance, na.rm = TRUE),
+            mean_low_ci = mean(lowci - estimate,na.rm = TRUE), mean_high_ci = mean(highci - estimate,na.rm = TRUE),
+            RMSE = rmse(actual =true_ninty, predicted = estimate))
 
 bm_ninty_pass_sum <- bm_nintyset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 

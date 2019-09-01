@@ -88,8 +88,9 @@ bm_onset_cp <- cowplot::plot_grid(bmonset_10obs, bmonset_20obs, bmonset_50obs)
 bm_onset_pass_sum <- bm_on %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
-            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance, na.rm = TRUE),
+            mean_low_ci = mean(lowci - estimate,na.rm = TRUE), mean_high_ci = mean(highci - estimate,na.rm = TRUE),
+            RMSE = rmse(actual =true_onset, predicted = estimate))
 
 bm_onset_pass_sum <- bm_onset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 

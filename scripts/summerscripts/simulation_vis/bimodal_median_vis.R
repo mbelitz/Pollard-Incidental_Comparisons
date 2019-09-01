@@ -89,8 +89,9 @@ bm_50_cp <- cowplot::plot_grid(bmmedian_10obs, bmmedian_20obs, bmmedian_50obs)
 bm_medianset_pass_sum <- bm_median %>% 
   mutate(pass_num = ifelse(pass == TRUE, 1,0)) %>% 
   group_by(estimator, sd, obs) %>% 
-  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance),
-            mean_low_ci = mean(lowci - estimate), mean_high_ci = mean(highci - estimate))
+  summarise(pass = sum(pass_num), mean_dis = mean(distance), mean_ci = mean(ci), sd_dis = sd(distance, na.rm = TRUE),
+            mean_low_ci = mean(lowci - estimate,na.rm = TRUE), mean_high_ci = mean(highci - estimate,na.rm = TRUE),
+            RMSE = rmse(actual =true_median, predicted = estimate))
 
 bm_median_pass_sum <- bm_medianset_pass_sum %>% 
   mutate(uid = paste(estimator, sd, obs)) %>% 
