@@ -3,7 +3,12 @@ library(ggplot2)
 
 # set up sims
 
+source("scripts/summerscripts/pearse_40sd_scripts.R")
+
 um_offset <- read.csv("simulation_outputs/onset_try2/unimodal_offset_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
+
+um_offset <- rbind(um_offset, pearse_offset20obs_40sd_df)
+um_offset <- rbind(um_offset, pearse_offset50obs_40sd_df)
 
 um_offset$sd <- as.factor(um_offset$sd)
 um_offset$obs <- as.factor(um_offset$obs)
