@@ -195,6 +195,7 @@ ggsave(filename = "simulation_paper/figure_outputs/Fig_1.png", plot = total_dis,
 
 um_corr <- ggplot(um_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
   geom_bar(stat = "identity", aes(fill = sd)) +
+  geom_hline(yintercept = 0.8) +
   labs(x = "Number of Observations", y = "Percent of Estimates") + 
   ggtitle("Unimodal Distribution") + 
   scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
@@ -209,6 +210,7 @@ um_corr <- ggplot(um_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
 
 bm_corr <- ggplot(bm_pass_sum_nopearse, aes(x = uid, y = abs(percent_right))) +
   geom_bar(stat = "identity", aes(fill = sd)) +
+  geom_hline(yintercept = 0.8) +
   labs(x = "Number of Observations", y = "Percent of Estimates") + 
   ggtitle("Bimodal Distribution") + 
   scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
@@ -390,9 +392,8 @@ line_RMSE <- total_pass_line_nopearse %>%
   geom_line(size = 1) +
   scale_x_continuous(breaks = c(0,10,50,90,100)) +
   facet_grid(sd~modality, scales = "free_y") +
-  theme(
-    legend.position = "bottom"
-  ) +
+  theme_bw(base_size = 12) +
+  theme(legend.position = "bottom") +
   labs(x = 'Percentile') +
   scale_color_manual(values = c("#440154FF", "#287D8EFF", "#73D055FF"))
 
