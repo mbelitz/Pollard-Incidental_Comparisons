@@ -4,6 +4,7 @@ library(ggplot2)
 # set up sims
 
 source("scripts/summerscripts/pearse_40sd_scripts.R")
+source("scripts/summerscripts/simulation_vis/create_naive_dfd.R")
 
 um_on <- read.csv("simulation_outputs/onset_try2/unimodal_onset_sims2.csv", stringsAsFactors = FALSE, header = TRUE)
 
@@ -42,6 +43,8 @@ ggplot(um_on.summary.10, aes(x = uid, y = meanonset)) +
 um_on.10 <- um_on %>% 
   filter(obs == "10") %>% 
   mutate(uid = paste(estimator, obs, sd))
+
+test <- left_join(um_on.10, naive_df, by = "uid")
 
 umonset_10obs <- ggplot(um_on.10) +
   geom_boxplot(aes(x = uid, y = estimate, color = sd, fill = estimator)) + 
